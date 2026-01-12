@@ -51,7 +51,7 @@ public final class DiskFormatPreset {
      * @param factory     factory that creates the DiskFormat
      */
     public DiskFormatPreset(String name, String description, DiskFormatFactory factory) {
-        log.debug("[constructor] DiskFormatPreset({}, {}, {})", name, description, factory);
+        // log.debug("[constructor] DiskFormatPreset({}, {}, {})", name, description, factory);
 
         this.name = Objects.requireNonNull(name, "name must not be null");
         this.description = Objects.requireNonNull(description, "description must not be null");
@@ -129,9 +129,9 @@ public final class DiskFormatPreset {
                             0,
                             1,
                             2,
-                            31,
+                            32,
                             34,
-                            2
+                            1
                     )
             );
 

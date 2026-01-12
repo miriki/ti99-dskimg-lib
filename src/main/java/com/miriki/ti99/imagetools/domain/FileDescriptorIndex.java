@@ -42,7 +42,7 @@ public final class FileDescriptorIndex {
      * @param entries raw FDI bytes (must be exactly 256 bytes)
      */
     public FileDescriptorIndex(byte[] entries) {
-        log.debug("[constructor] FileDescriptorIndex({})", entries);
+        // log.debug("[constructor] FileDescriptorIndex({})", entries);
 
         if (entries.length != Sector.SIZE) {
             throw new IllegalArgumentException("FDI must be exactly 256 bytes");
@@ -59,7 +59,7 @@ public final class FileDescriptorIndex {
      * Returns a defensive copy of the raw 256-byte FDI table.
      */
     public byte[] getEntries() {
-        log.debug("getEntries()");
+        // log.debug("getEntries()");
         return Arrays.copyOf(entries, entries.length);
     }
 
@@ -68,7 +68,7 @@ public final class FileDescriptorIndex {
      * Unused entries will be 0.
      */
     public int[] getFdrSectors() {
-        log.debug("getFdrSectors()");
+        // log.debug("getFdrSectors()");
 
         int[] sectors = new int[MAX_ENTRIES];
 
@@ -89,7 +89,7 @@ public final class FileDescriptorIndex {
      * Returns the FDR sector number for the given file index.
      */
     public int getFdrSectorForFile(int fileIndex) {
-        log.debug("getFdrSectorForFile({})", fileIndex);
+        // log.debug("getFdrSectorForFile({})", fileIndex);
 
         int offset = fileIndex * 2;
         int hi = entries[offset] & 0xFF;
@@ -101,7 +101,7 @@ public final class FileDescriptorIndex {
      * Sets the FDR sector number for the given file index.
      */
     public void setFdrSectorForFile(int fileIndex, int sector) {
-        log.debug("setFdrSectorForFile({}, {})", fileIndex, sector);
+        // log.debug("setFdrSectorForFile({}, {})", fileIndex, sector);
 
         int offset = fileIndex * 2;
         entries[offset]     = (byte) ((sector >> 8) & 0xFF);
@@ -128,7 +128,7 @@ public final class FileDescriptorIndex {
      * Converts this FDI into a DTO.
      */
     public FileDescriptorIndexDTO toDTO() {
-        log.debug("toDTO()");
+        // log.debug("toDTO()");
         return new FileDescriptorIndexDTO(entries);
     }
 
@@ -136,7 +136,7 @@ public final class FileDescriptorIndex {
      * Creates an FDI from a DTO.
      */
     public static FileDescriptorIndex fromDTO(FileDescriptorIndexDTO dto) {
-        log.debug("fromDTO({})", dto);
+        // log.debug("fromDTO({})", dto);
         return new FileDescriptorIndex(dto.getEntries());
     }
 }

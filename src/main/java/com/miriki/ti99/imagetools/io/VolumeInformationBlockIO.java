@@ -46,7 +46,7 @@ public final class VolumeInformationBlockIO {
 
     public static VolumeInformationBlock readFrom(Sector sector) {
         Objects.requireNonNull(sector, "Sector must not be null");
-        log.debug("readFrom({})", sector);
+        // log.debug("readFrom({})", sector);
 
         byte[] raw = sector.getBytes();
 
@@ -101,7 +101,7 @@ public final class VolumeInformationBlockIO {
         Objects.requireNonNull(sector, "Sector must not be null");
         Objects.requireNonNull(vib, "VolumeInformationBlock must not be null");
 
-        log.debug("writeTo({}, {})", sector, vib);
+        // log.debug("writeTo({}, {})", sector, vib);
 
         byte[] raw = new byte[SIZE];
 
@@ -149,12 +149,12 @@ public final class VolumeInformationBlockIO {
     // ============================================================
 
     private static String readString(byte[] raw, int offset, int len) {
-        log.debug("readString({}, {}, {})", raw, offset, len);
+        // log.debug("readString({}, {}, {})", raw, offset, len);
         return new String(raw, offset, len, StandardCharsets.US_ASCII).trim();
     }
 
     private static void writeString(byte[] raw, int offset, int len, String value) {
-        log.debug("writeString({}, {}, {}, {})", raw, offset, len, value);
+        // log.debug("writeString({}, {}, {}, {})", raw, offset, len, value);
 
         byte[] bytes = value.getBytes(StandardCharsets.US_ASCII);
         int copyLen = Math.min(bytes.length, len);
@@ -166,12 +166,12 @@ public final class VolumeInformationBlockIO {
     }
 
     private static int readWord(byte[] raw, int offset) {
-        log.debug("readWord({}, {})", raw, offset);
+        // log.debug("readWord({}, {})", raw, offset);
         return ((raw[offset] & 0xFF) << 8) | (raw[offset + 1] & 0xFF);
     }
 
     private static void writeWord(byte[] raw, int offset, int value) {
-        log.debug("writeWord({}, {}, {})", raw, offset, value);
+        // log.debug("writeWord({}, {}, {})", raw, offset, value);
         raw[offset]     = (byte) ((value >> 8) & 0xFF);
         raw[offset + 1] = (byte) (value & 0xFF);
     }

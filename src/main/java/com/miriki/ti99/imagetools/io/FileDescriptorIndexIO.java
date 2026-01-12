@@ -45,7 +45,7 @@ public final class FileDescriptorIndexIO {
      */
     public static FileDescriptorIndex readFrom(Sector sector) {
         Objects.requireNonNull(sector, "Sector must not be null");
-        log.debug("readFrom({})", sector);
+        // log.debug("readFrom({})", sector);
 
         byte[] entries = readSectorBytes(sector);
         return new FileDescriptorIndex(entries);
@@ -64,7 +64,7 @@ public final class FileDescriptorIndexIO {
     public static void writeTo(Sector sector, FileDescriptorIndex fdi) {
         Objects.requireNonNull(sector, "Sector must not be null");
         Objects.requireNonNull(fdi, "FileDescriptorIndex must not be null");
-        log.debug("writeTo({}, {})", sector, fdi);
+        // log.debug("writeTo({}, {})", sector, fdi);
 
         writeSectorBytes(sector, fdi.getEntries());
     }

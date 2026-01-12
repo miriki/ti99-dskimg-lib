@@ -43,7 +43,7 @@ public final class AllocationBitmap {
      * Creates a bitmap with all sectors initially free.
      */
     public AllocationBitmap(int totalSectors) {
-        log.debug("[constructor] AllocationBitmap({})", totalSectors);
+        // log.debug("[constructor] AllocationBitmap({})", totalSectors);
 
         if (totalSectors <= 0) {
             throw new IllegalArgumentException("totalSectors must be > 0");
@@ -57,7 +57,7 @@ public final class AllocationBitmap {
      * Internal constructor used by fromBytes().
      */
     private AllocationBitmap(int totalSectors, boolean[] used) {
-        log.debug("[constructor] AllocationBitmap({}, used[])", totalSectors);
+        // log.debug("[constructor] AllocationBitmap({}, used[])", totalSectors);
 
         this.totalSectors = totalSectors;
         this.used = used;
@@ -68,12 +68,12 @@ public final class AllocationBitmap {
     // ============================================================
 
     public int getTotalSectors() {
-        log.debug("getTotalSectors()");
+        // log.debug("getTotalSectors()");
         return totalSectors;
     }
 
     public int size() {
-        log.debug("size()");
+        // log.debug("size()");
         return used.length;
     }
 
@@ -82,26 +82,26 @@ public final class AllocationBitmap {
     // ============================================================
 
     public boolean isUsed(int sectorIndex) {
-        log.debug("isUsed({})", sectorIndex);
+        // log.debug("isUsed({})", sectorIndex);
         checkRange(sectorIndex);
         return used[sectorIndex];
     }
 
     public void setUsed(int sectorIndex, boolean value) {
-        log.debug("setUsed({}, {})", sectorIndex, value);
+        // log.debug("setUsed({}, {})", sectorIndex, value);
         checkRange(sectorIndex);
         used[sectorIndex] = value;
     }
 
     /** Marks a sector as used. */
     public void allocate(int sectorIndex) {
-        log.debug("allocate({})", sectorIndex);
+        // log.debug("allocate({})", sectorIndex);
         setUsed(sectorIndex, true);
     }
 
     /** Marks a sector as free. */
     public void free(int sectorIndex) {
-        log.debug("free({})", sectorIndex);
+        // log.debug("free({})", sectorIndex);
         setUsed(sectorIndex, false);
     }
 
@@ -110,7 +110,7 @@ public final class AllocationBitmap {
      * Returns -1 if no free sector exists.
      */
     public int allocateFirstFree() {
-        log.debug("allocateFirstFree()");
+        // log.debug("allocateFirstFree()");
 
         for (int i = 0; i < totalSectors; i++) {
             if (!used[i]) {
@@ -129,7 +129,7 @@ public final class AllocationBitmap {
      * Serializes the bitmap into packed bytes (LSB-first).
      */
     public byte[] toBytes() {
-        log.debug("toBytes()");
+        // log.debug("toBytes()");
 
         int bytes = (totalSectors + 7) / 8;
         byte[] result = new byte[bytes];
@@ -152,7 +152,7 @@ public final class AllocationBitmap {
      * @param totalSectors number of sectors represented
      */
     public static AllocationBitmap fromBytes(byte[] bytes, int totalSectors) {
-        log.debug("fromBytes(bytes[{}], totalSectors={})", bytes.length, totalSectors);
+        // log.debug("fromBytes(bytes[{}], totalSectors={})", bytes.length, totalSectors);
 
         Objects.requireNonNull(bytes, "bytes must not be null");
         if (totalSectors <= 0) {
@@ -183,13 +183,13 @@ public final class AllocationBitmap {
 
     /** Creates a bitmap with all sectors free. */
     public static AllocationBitmap createAllFree(int totalSectors) {
-        log.debug("createAllFree({})", totalSectors);
+        // log.debug("createAllFree({})", totalSectors);
         return new AllocationBitmap(totalSectors);
     }
 
     /** Creates a bitmap with all sectors marked as used. */
     public static AllocationBitmap createAllUsed(int totalSectors) {
-        log.debug("createAllUsed({})", totalSectors);
+        // log.debug("createAllUsed({})", totalSectors);
 
         boolean[] used = new boolean[totalSectors];
         Arrays.fill(used, true);
@@ -202,7 +202,7 @@ public final class AllocationBitmap {
     // ============================================================
 
     private void checkRange(int sectorIndex) {
-        log.debug("checkRange({})", sectorIndex);
+        // log.debug("checkRange({})", sectorIndex);
 
         if (sectorIndex < 0 || sectorIndex >= totalSectors) {
             throw new IndexOutOfBoundsException(

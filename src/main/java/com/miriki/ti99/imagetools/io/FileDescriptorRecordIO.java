@@ -63,7 +63,7 @@ public final class FileDescriptorRecordIO {
      */
     public static FileDescriptorRecord readFrom(Sector sector) {
         Objects.requireNonNull(sector, "sector must not be null");
-        log.debug("readFrom({})", sector);
+        // log.debug("readFrom({})", sector);
 
         byte[] raw = sector.getBytes();
         FileDescriptorRecord fdr = new FileDescriptorRecord();
@@ -73,7 +73,7 @@ public final class FileDescriptorRecordIO {
         readHeaderFields(raw, fdr);
         readDataChainDcp(raw, fdr);
 
-        log.info("  FDR.readFrom({}) --> {}", sector, fdr);
+        // log.info("  FDR.readFrom({}) --> {}", sector, fdr);
         return fdr;
     }
 
@@ -88,7 +88,7 @@ public final class FileDescriptorRecordIO {
         Objects.requireNonNull(sector, "sector must not be null");
         Objects.requireNonNull(fdr, "FileDescriptorRecord must not be null");
 
-        log.debug("writeTo({}, {})", sector, fdr);
+        // log.debug("writeTo({}, {})", sector, fdr);
 
         byte[] raw = new byte[SECTOR_SIZE];
 
@@ -100,7 +100,7 @@ public final class FileDescriptorRecordIO {
             sector.set(i, raw[i]);
         }
 
-        log.info("  FDR.writeTo({}, {})", sector, fdr);
+        // log.info("  FDR.writeTo({}, {})", sector, fdr);
         logHexDump(raw);
     }
 
@@ -347,6 +347,6 @@ public final class FileDescriptorRecordIO {
         for (int i = 0; i < SECTOR_SIZE; i++) {
             sb.append(String.format("%02X ", raw[i] & 0xFF));
         }
-        log.info("  data: {}", sb.toString());
+        // log.info("  data: {}", sb.toString());
     }
 }

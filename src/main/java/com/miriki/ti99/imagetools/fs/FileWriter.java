@@ -54,8 +54,7 @@ public final class FileWriter {
             String fileName,
             byte[] data) {
 
-        log.debug("createFile(image={}, format={}, vib={}, fileName={}, dataLen={})",
-                image, format, vib, fileName, data.length);
+        // log.debug("createFile(image={}, format={}, vib={}, fileName={}, dataLen={})", image, format, vib, fileName, data.length);
 
         Objects.requireNonNull(image);
         Objects.requireNonNull(format);
@@ -203,7 +202,7 @@ public final class FileWriter {
             DiskFormat format,
             int neededSectors) {
 
-        log.debug("allocateSectors(abm={}, format={}, needed={})", abm, format, neededSectors);
+        // log.debug("allocateSectors(abm={}, format={}, needed={})", abm, format, neededSectors);
 
         List<Integer> sectors = new ArrayList<>(neededSectors);
 
@@ -232,8 +231,7 @@ public final class FileWriter {
             List<Integer> sectors,
             byte[] data) {
 
-        log.debug("writeDataToSectors(image={}, sectors={}, dataLen={})",
-                image, sectors, data.length);
+        // log.debug("writeDataToSectors(image={}, sectors={}, dataLen={})", image, sectors, data.length);
 
         int offset = 0;
 
@@ -266,7 +264,7 @@ public final class FileWriter {
     // ============================================================
 
     private static int findFreeFdrSector(Ti99Image image, DiskFormat format) {
-        log.debug("findFreeFdrSector(image={}, format={})", image, format);
+        // log.debug("findFreeFdrSector(image={}, format={})", image, format);
 
         int firstFdr = format.getFirstFdrSector();
         int count = format.getFdrSectorCount();
@@ -307,8 +305,7 @@ public final class FileWriter {
             int fileSize,
             DiskFormat format) {
 
-        log.debug("buildFdr(fileName={}, sectors={}, fileSize={}, format={})",
-                fileName, allocatedSectors, fileSize, format);
+        // log.debug("buildFdr(fileName={}, sectors={}, fileSize={}, format={})", fileName, allocatedSectors, fileSize, format);
 
         FileDescriptorRecord fdr = new FileDescriptorRecord();
 
@@ -432,7 +429,7 @@ public final class FileWriter {
             VolumeInformationBlock oldVib,
             AllocationBitmap abm) {
 
-        log.debug("updateVibWithNewAbm(oldVib={}, abm={})", oldVib, abm);
+        // log.debug("updateVibWithNewAbm(oldVib={}, abm={})", oldVib, abm);
 
         return new VolumeInformationBlock(
                 oldVib.getVolumeName(),

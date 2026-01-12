@@ -41,7 +41,7 @@ public final class Sector {
     public Sector(byte[] imageBytes, int sectorIndex) {
         Objects.requireNonNull(imageBytes, "imageBytes must not be null");
 
-        log.debug("Sector(index={})", sectorIndex);
+        // log.debug("Sector(index={})", sectorIndex);
 
         int off = sectorIndex * SIZE;
         if (off < 0 || off + SIZE > imageBytes.length) {
@@ -53,7 +53,7 @@ public final class Sector {
         this.imageBytes = imageBytes;
         this.offset = off;
 
-        log.info("Sector created at index {}", sectorIndex);
+        // log.info("Sector created at index {}", sectorIndex);
     }
 
     // ============================================================
@@ -64,7 +64,7 @@ public final class Sector {
      * Returns a defensive copy of the 256 bytes of this sector.
      */
     public byte[] getBytes() {
-        log.debug("getBytes()");
+        // log.debug("getBytes()");
         return Arrays.copyOfRange(imageBytes, offset, offset + SIZE);
     }
 
@@ -72,7 +72,7 @@ public final class Sector {
      * Reads a single byte from the sector.
      */
     public byte get(int index) {
-        log.debug("get({})", index);
+        // log.debug("get({})", index);
         checkIndex(index);
         return imageBytes[offset + index];
     }
@@ -93,7 +93,7 @@ public final class Sector {
      */
     public void setData(byte[] data) {
         Objects.requireNonNull(data, "data must not be null");
-        log.debug("setData(len={})", data.length);
+        // log.debug("setData(len={})", data.length);
 
         requireExactSize(data.length);
         System.arraycopy(data, 0, imageBytes, offset, SIZE);
@@ -103,7 +103,7 @@ public final class Sector {
      * Writes a single byte at the given index.
      */
     public void set(int index, byte value) {
-        log.debug("set({}, {})", index, value);
+        // log.debug("set({}, {})", index, value);
         checkIndex(index);
         imageBytes[offset + index] = value;
     }

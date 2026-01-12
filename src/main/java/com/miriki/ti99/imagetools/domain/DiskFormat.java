@@ -65,7 +65,7 @@ public final class DiskFormat {
             int firstDataSector,
             int sectorsPerCluster) {
 
-        log.debug("[constructor] DiskFormat({}, ... {})", totalSectors, sectorsPerCluster);
+        // log.debug("[constructor] DiskFormat({}, ... {})", totalSectors, sectorsPerCluster);
 
         requirePositive(totalSectors, "totalSectors");
         requirePositive(sectorsPerTrack, "sectorsPerTrack");

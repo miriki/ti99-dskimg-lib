@@ -2,6 +2,9 @@ package com.miriki.ti99.imagetools.domain.io;
 
 import java.util.Arrays;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.miriki.ti99.imagetools.domain.*;
 import com.miriki.ti99.imagetools.io.*;
 
@@ -17,6 +20,8 @@ import com.miriki.ti99.imagetools.io.*;
  */
 public final class ImageFormatter {
 
+    private static final Logger log = LoggerFactory.getLogger(ImageFormatter.class);
+	
     private static final byte ERASED = (byte) 0xE5;
 
     private ImageFormatter() {
@@ -78,8 +83,8 @@ public final class ImageFormatter {
         abm.allocate(fmt.getFdiSector()); // FDI (usually 1)
 
         // FDR zone (directory zone)
-        int first = fmt.getFirstFdrSector();
-        int count = fmt.getFdrSectorCount();
+        // int first = fmt.getFirstFdrSector();
+        // int count = fmt.getFdrSectorCount();
         /*
         // FDR zone is reserved but NOT allocated
 		// Do NOT mark FDR sectors as used here.
@@ -97,6 +102,20 @@ public final class ImageFormatter {
 
     private static void writeVib(Ti99Image image, DiskFormat fmt, AllocationBitmap abm) {
 
+    	// log.debug( "writeVib( image='{}', fmt='{}', abm='{}' )", image.toString(), fmt.toString(), abm.toString() );
+    	
+    	log.trace( "  volume:             '{}'", "NEWVOLUME" );
+    	log.trace( "  getTotalSectors:    '{}'", fmt.getTotalSectors() );
+    	log.trace( "  getSectorsPerTrack: '{}'", fmt.getSectorsPerTrack() );
+    	log.trace( "  getTracksPerSide:   '{}'", fmt.getTracksPerSide() );
+    	log.trace( "  getSides:           '{}'", fmt.getSides() );
+    	log.trace( "  getDensity.ordinal: '{}'", fmt.getDensity().ordinal() );
+    	log.trace( "  id:                 '{}'", "DSK" );
+    	log.trace( "  create:             '{}'", 0 );
+    	log.trace( "  update:             '{}'", 0 );
+    	log.trace( "  backup:             '{}'", 0 );
+    	log.trace( "  abm:                '{}'", abm.toBytes() );
+    	
         VolumeInformationBlock vib = new VolumeInformationBlock(
                 "NEWVOLUME",                   // default name
                 fmt.getTotalSectors(),

@@ -40,7 +40,7 @@ public final class FileImporter {
      *   3) Write updated VIB back to disk
      */
     public static void importFile(Ti99Image image, Ti99File file) throws IOException {
-        log.info("importFile(image={}, file={})", image, file);
+        log.debug( "importFile(image={}, file={})", image, file );
 
         Objects.requireNonNull(image, "image must not be null");
         Objects.requireNonNull(file, "file must not be null");
@@ -60,7 +60,7 @@ public final class FileImporter {
                 file.getContent()
         );
 
-        log.info("  file imported to image");
+        log.trace( "  file '{}' imported to image", file.getFileName() );
     }
 
     // ============================================================

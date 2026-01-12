@@ -54,7 +54,7 @@ public final class Ti99Image {
      * All sectors are filled with 0xE5 except the first two bytes (TI convention).
      */
     public Ti99Image(DiskFormat format) {
-        log.info("[constructor] Ti99Image({})", format);
+        // log.info("[constructor] Ti99Image({})", format);
 
         this.format = Objects.requireNonNull(format);
         this.totalSectors = format.getTotalSectors();
@@ -72,7 +72,7 @@ public final class Ti99Image {
      * @param data   raw sector data (must match expected size)
      */
     public Ti99Image(DiskFormat format, byte[] data) {
-        log.info("[constructor] Ti99Image({}, data[{}])", format, data.length);
+        // log.info("[constructor] Ti99Image({}, data[{}])", format, data.length);
 
         this.format = Objects.requireNonNull(format);
         Objects.requireNonNull(data);
@@ -130,12 +130,12 @@ public final class Ti99Image {
     // ============================================================
 
     public int getTotalSectors() {
-        log.debug("getTotalSectors()");
+        // log.debug("getTotalSectors()");
         return totalSectors;
     }
 
     public DiskFormat getFormat() {
-        log.debug("getFormat()");
+        // log.debug("getFormat()");
         return format;
     }
 
@@ -144,7 +144,7 @@ public final class Ti99Image {
      * Callers must treat this as read-only.
      */
     public byte[] getRawData() {
-        log.debug("getRawData()");
+        // log.debug("getRawData()");
         return data;
     }
 
@@ -153,13 +153,13 @@ public final class Ti99Image {
     // ============================================================
 
     public Sector getSector(int index) {
-        log.debug("getSector({})", index);
+        // log.debug("getSector({})", index);
         checkSectorIndex(index);
         return new Sector(data, index);
     }
 
     public Cluster getCluster(int index) {
-        log.debug("getCluster({})", index);
+        // log.debug("getCluster({})", index);
         checkClusterIndex(index);
         return new Cluster(format, data, index);
     }
@@ -169,17 +169,17 @@ public final class Ti99Image {
     // ============================================================
 
     public boolean isSectorFree(int sec) {
-        log.debug("isSectorFree({})", sec);
+        // log.debug("isSectorFree({})", sec);
         return !sectorUsed[sec];
     }
 
     public void markSectorUsed(int sec) {
-        log.debug("markSectorUsed({})", sec);
+        // log.debug("markSectorUsed({})", sec);
         sectorUsed[sec] = true;
     }
 
     public void markSectorFree(int sec) {
-        log.debug("markSectorFree({})", sec);
+        // log.debug("markSectorFree({})", sec);
         sectorUsed[sec] = false;
     }
 
@@ -191,7 +191,7 @@ public final class Ti99Image {
      * Allocates any free sectors in the data area.
      */
     public List<Integer> allocateSectors(int count) {
-        log.debug("allocateSectors({})", count);
+        // log.debug("allocateSectors({})", count);
         return allocateInRange(format.getFirstDataSector(), totalSectors, count);
     }
 
@@ -199,7 +199,7 @@ public final class Ti99Image {
      * Allocates one FDR sector.
      */
     public int allocateFdrSector() {
-        log.debug("allocateFdrSector()");
+        // log.debug("allocateFdrSector()");
         List<Integer> result = allocateInRange(format.getFirstFdrSector(), format.getFirstDataSector(), 1);
         return result.get(0);
     }
@@ -208,7 +208,7 @@ public final class Ti99Image {
      * Allocates data sectors only.
      */
     public List<Integer> allocateDataSectors(int count) {
-        log.debug("allocateDataSectors({})", count);
+        // log.debug("allocateDataSectors({})", count);
         return allocateInRange(format.getFirstDataSector(), totalSectors, count);
     }
 
@@ -242,7 +242,7 @@ public final class Ti99Image {
      * Searches the first two directory sectors for a free slot.
      */
     public void addDirectoryEntry(String name, int fdrSector) {
-        log.info("addDirectoryEntry({}, {})", name, fdrSector);
+        // log.info("addDirectoryEntry({}, {})", name, fdrSector);
 
         for (int dirSec = 1; dirSec <= 2; dirSec++) {
             Sector s = getSector(dirSec);
