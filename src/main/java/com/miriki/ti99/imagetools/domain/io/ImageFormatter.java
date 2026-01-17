@@ -142,6 +142,7 @@ public final class ImageFormatter {
 
         // FDI is a 256-byte sector containing up to 127 2-byte pointers
         byte[] empty = new byte[Sector.SIZE];
+        Arrays.fill(empty, (byte) 0x00);
         FileDescriptorIndex fdi = new FileDescriptorIndex(empty);
 
         Sector fdiSector = image.getSector(fmt.getFdiSector());
@@ -158,6 +159,7 @@ public final class ImageFormatter {
         int count = fmt.getFdrSectorCount();
 
         byte[] empty = new byte[Sector.SIZE];
+        Arrays.fill(empty, (byte) 0x00);
 
         for (int i = 0; i < count; i++) {
             Sector sector = image.getSector(first + i);

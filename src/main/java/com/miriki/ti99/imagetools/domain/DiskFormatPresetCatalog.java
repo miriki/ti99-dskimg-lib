@@ -70,7 +70,8 @@ public final class DiskFormatPresetCatalog {
 
         // CorComp
         registerFactoryPreset("DSSD (CorComp)",
-                DiskFormatFactory.create(40, 2, 9, DiskFormat.Density.SINGLE, 14, 18, 1));
+                DiskFormatFactory.create(40, 2, 9, DiskFormat.Density.SINGLE, 32, 0, 1));
+        
         registerFactoryPreset("DSDD (CorComp)",
                 DiskFormatFactory.createDsDd());
 
@@ -80,25 +81,28 @@ public final class DiskFormatPresetCatalog {
 
         // BwG Controller
         registerFactoryPreset("DSSD (BwG)",
-                DiskFormatFactory.create(40, 2, 9, DiskFormat.Density.SINGLE, 14, 18, 1));
+                DiskFormatFactory.create(40, 2, 9, DiskFormat.Density.SINGLE, 32, 0, 1));
+        
         registerFactoryPreset("DSDD (BwG)",
                 DiskFormatFactory.createDsDd());
 
         // Myarc HFDC
         registerFactoryPreset("HFDC 40-Track DD",
                 DiskFormatFactory.createDsDd());
+        
         registerFactoryPreset("HFDC 80-Track DD",
                 DiskFormatFactory.createHfdc80());
+        
         registerFactoryPreset("HFDC QD",
-                DiskFormatFactory.create(80, 2, 36, DiskFormat.Density.QUAD, 32, 32, 4));
+                DiskFormatFactory.create(80, 2, 36, DiskFormat.Density.HIGH, 32, 0, 4));
 
         // Myarc FDC (QD)
         registerFactoryPreset("Myarc FDC QD",
-                DiskFormatFactory.create(80, 2, 36, DiskFormat.Density.QUAD, 32, 32, 4));
+                DiskFormatFactory.create(80, 2, 36, DiskFormat.Density.ULTRA, 32, 0, 4));
 
         // Horizon RAMdisk (Bonus)
         registerFactoryPreset("Horizon RAMdisk 400K",
-                DiskFormatFactory.create(80, 1, 32, DiskFormat.Density.DOUBLE, 32, 32, 4));
+                DiskFormatFactory.create(80, 1, 32, DiskFormat.Density.DOUBLE, 32, 0, 4));
     }
 
     private DiskFormatPresetCatalog() {

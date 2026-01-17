@@ -1,5 +1,6 @@
 package com.miriki.ti99.imagetools.fs;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Objects;
 
@@ -42,27 +43,80 @@ public final class FileImporter {
     public static void importFile(Ti99Image image, Ti99File file) throws IOException {
         log.debug( "importFile(image={}, file={})", image, file );
 
-        Objects.requireNonNull(image, "image must not be null");
-        Objects.requireNonNull(file, "file must not be null");
+        Objects.requireNonNull(image);
+        Objects.requireNonNull(file);
 
         DiskFormat format = image.getFormat();
 
-        // Read VIB
         VolumeInformationBlock vib =
                 VolumeInformationBlockIO.readFrom(image.getSector(format.getVibSector()));
 
-        // Create file (updates ABM + FDI)
+        byte[] content = file.getContent();
+        byte[] data;
+
+        if (file.getRecordLength() > 0 && !file.isVariable()) {
+            data = buildFixStream(content, file.getRecordLength());
+        } else {
+            data = content;
+        }
+        file.setPackedContent(data);
+
         FileWriter.createFile(
                 image,
                 format,
                 vib,
-                file.getFileName(),
-                file.getContent()
+                // file.getFileName(),
+                // data
+                file
         );
-
+        
         log.trace( "  file '{}' imported to image", file.getFileName() );
     }
 
+    private static byte[] buildFixStream(byte[] content, int recLen) {
+
+        // final int SECTOR_SIZE = 256;
+        final int SECTOR_SIZE = Sector.SIZE;
+
+        // Anzahl Records im FIAD-Content
+        int recordCount = content.length / recLen;
+
+        // Records pro Sektor
+        int recordsPerSector = SECTOR_SIZE / recLen;
+
+        // Gesamtzahl benötigter Sektoren
+        int totalSectors = (recordCount + recordsPerSector - 1) / recordsPerSector;
+
+        ByteArrayOutputStream out = new ByteArrayOutputStream(totalSectors * SECTOR_SIZE);
+
+        int offset = 0;
+
+        for (int s = 0; s < totalSectors; s++) {
+
+            int bytesWritten = 0;
+
+            // Schreibe Records in diesen Sektor
+            for (int r = 0; r < recordsPerSector; r++) {
+
+                if (offset + recLen > content.length) {
+                    break; // keine Records mehr
+                }
+
+                out.write(content, offset, recLen);
+                offset += recLen;
+                bytesWritten += recLen;
+            }
+
+            // Rest des Sektors mit 0x00 füllen
+            while (bytesWritten < SECTOR_SIZE) {
+                out.write(0x00);
+                bytesWritten++;
+            }
+        }
+
+        return out.toByteArray();
+    }    
+    
     // ============================================================
     //  DELETE FILE
     // ============================================================

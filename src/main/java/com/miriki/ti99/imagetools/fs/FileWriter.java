@@ -9,7 +9,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.miriki.ti99.imagetools.domain.*;
-import com.miriki.ti99.imagetools.domain.io.FileFlagBits;
 import com.miriki.ti99.imagetools.io.FileDescriptorRecordIO;
 import com.miriki.ti99.imagetools.io.Sector;
 import com.miriki.ti99.imagetools.io.VolumeInformationBlockIO;
@@ -32,6 +31,7 @@ import com.miriki.ti99.imagetools.io.VolumeInformationBlockIO;
  */
 public final class FileWriter {
 
+    @SuppressWarnings("unused")
     private static final Logger log = LoggerFactory.getLogger(FileWriter.class);
 
     private static final int SECTOR_SIZE = 256;
@@ -46,27 +46,29 @@ public final class FileWriter {
 
     /**
      * Creates a new file on the disk image.
+     *
+     * Uses Ti99File as high-level DTO:
+     *   - fileName, recordLength, flags, content/packedContent
+     *   - FIAD flags are taken as-is
+     *   - FDR type is derived here from semantics (PROGRAM/DIS/INT, FIX/VAR)
      */
     public static VolumeInformationBlock createFile(
             Ti99Image image,
             DiskFormat format,
             VolumeInformationBlock vib,
-            String fileName,
-            byte[] data) {
-
-        // log.debug("createFile(image={}, format={}, vib={}, fileName={}, dataLen={})", image, format, vib, fileName, data.length);
+            Ti99File file) {
 
         Objects.requireNonNull(image);
         Objects.requireNonNull(format);
         Objects.requireNonNull(vib);
-        Objects.requireNonNull(fileName);
-        Objects.requireNonNull(data);
+        Objects.requireNonNull(file);
 
         AllocationBitmap abm = vib.getAbm();
 
         // ------------------------------------------------------------
-        // 1) Determine required sectors
+        // 1) Determine required sectors (based on packed content)
         // ------------------------------------------------------------
+        byte[] data = file.getPackedContent();
         int neededSectors = Math.max(1, (data.length + SECTOR_SIZE - 1) / SECTOR_SIZE);
 
         // ------------------------------------------------------------
@@ -93,16 +95,41 @@ public final class FileWriter {
 
         abm.allocate(fdrSector);
 
+        // DEBUG: Dump BEFORE writing FDR
+        {
+            Sector s = image.getSector(fdrSector);
+            byte[] raw = s.getBytes();
+            System.out.println("FDR HEX DUMP (before write), sector " + fdrSector + ":");
+            for (int i = 0; i < 32; i++) {
+                System.out.printf("%02X ", raw[i]);
+            }
+            System.out.println("\n");
+        }
+
         // ------------------------------------------------------------
-        // 5) Build FDR
+        // 5) Build FDR (derive FDR type here)
         // ------------------------------------------------------------
-        FileDescriptorRecord fdr = buildFdr(fileName, allocatedSectors, data.length, format);
+        FileDescriptorRecord fdr = buildFdr(file, allocatedSectors, format);
 
         // ------------------------------------------------------------
         // 6) Write FDR + update FDI
         // ------------------------------------------------------------
-        FileDescriptorRecordIO.writeTo(image.getSector(fdrSector), fdr);
-        addFdrToFdi(image, fileName, fdrSector);
+        Sector fdrSecObj = image.getSector(fdrSector);
+        FileDescriptorRecordIO.writeTo(fdrSecObj, fdr);
+
+        // DEBUG: Dump AFTER writing FDR
+        {
+        	byte actualStatus = image.getSector(fdrSector).getBytes()[0x0C];
+        	System.out.printf("FDR fileStatus written: 0x%02X\n", actualStatus);
+            byte[] raw = fdrSecObj.getBytes();
+            System.out.println("FDR HEX DUMP (after write), sector " + fdrSector + ":");
+            for (int i = 0; i < 32; i++) {
+                System.out.printf("%02X ", raw[i]);
+            }
+            System.out.println("\n");
+        }
+
+        addFdrToFdi(image, file.getFileName(), fdrSector);
 
         // ------------------------------------------------------------
         // 7) Update VIB (ABM changed)
@@ -202,8 +229,6 @@ public final class FileWriter {
             DiskFormat format,
             int neededSectors) {
 
-        // log.debug("allocateSectors(abm={}, format={}, needed={})", abm, format, neededSectors);
-
         List<Integer> sectors = new ArrayList<>(neededSectors);
 
         int firstDataSector = format.getFirstDataSector();
@@ -230,8 +255,6 @@ public final class FileWriter {
             Ti99Image image,
             List<Integer> sectors,
             byte[] data) {
-
-        // log.debug("writeDataToSectors(image={}, sectors={}, dataLen={})", image, sectors, data.length);
 
         int offset = 0;
 
@@ -264,8 +287,6 @@ public final class FileWriter {
     // ============================================================
 
     private static int findFreeFdrSector(Ti99Image image, DiskFormat format) {
-        // log.debug("findFreeFdrSector(image={}, format={})", image, format);
-
         int firstFdr = format.getFirstFdrSector();
         int count = format.getFdrSectorCount();
 
@@ -300,31 +321,88 @@ public final class FileWriter {
     // ============================================================
 
     public static FileDescriptorRecord buildFdr(
-            String fileName,
+            Ti99File file,
             List<Integer> allocatedSectors,
-            int fileSize,
             DiskFormat format) {
 
-        // log.debug("buildFdr(fileName={}, sectors={}, fileSize={}, format={})", fileName, allocatedSectors, fileSize, format);
-
         FileDescriptorRecord fdr = new FileDescriptorRecord();
+        byte[] data = file.getPackedContent();
+        int packedSize = data.length;
 
+        // --------------------------------------------------------
         // Basic metadata
-        fdr.setFileName(fileName);
-        fdr.setFileType(FileFlagBits.TYPE_PROGRAM);
-        fdr.setFlags(0);
+        // --------------------------------------------------------
+        fdr.setFileName(file.getFileName());
 
-        // HFDC fields
+        // FIAD flags (TIFILES header) are taken as-is
+        // fdr.setFlags(file.getFlags());
+
+        // --------------------------------------------------------
+        // FDR type (on-disk TI-DOS type code)
+        // Derived from semantics: PROGRAM vs INTERNAL vs DISPLAY, FIX vs VAR
+        // --------------------------------------------------------
+        
+        int status = 0;
+
+	    // Bit 0: Program/Data (0 = Program, 1 = Data)
+        if (file.isProgram()) status |= 0x01;
+	
+	    // Bit 1: ASCII/Binary (0 = DISPLAY, 1 = INTERNAL/PROGRAM)
+        if (file.isInternal()) status |= 0x02;
+	
+	    // Bit 3: PROTECT (optional, wenn du sowas modellierst)
+	    if (file.tfiIsProtected()) status |= 0x08;
+	
+	    // Bit 4: BACKUP (aus FIAD-Flag)
+	    if (file.tfiIsBackup()) status |= 0x10;
+	
+	    // Bit 5: EMULATE (aus FIAD-Flag)
+	    if (file.tfiIsEmulated()) status |= 0x20;
+	
+	    // Bit 7: FIXED/VARIABLE (0 = FIXED, 1 = VARIABLE)
+	    if (file.isVariable()) status |= 0x80;
+	
+	    fdr.setFileStatus(status);
+        
+        // --------------------------------------------------------
+        // HFDC / record-related fields
+        // --------------------------------------------------------
+        int recordLength = file.getRecordLength();
+
+        // Extended record length (HFDC) – not used here
         fdr.setExtendedRecordLength(0);
-        fdr.setRecordsPerSector(0);
-        fdr.setLogicalRecordLength(0);
+
+        // Records per sector & logical record length:
+        // For FIXED files: recordsPerSector = SECTOR_SIZE / recordLength
+        // For VARIABLE or PROGRAM: 0
+        int rps = 0;
+        int lrl = 0;
+        if (file.isProgram()) {
+            rps = 0;
+            lrl = 0;
+        } else if (file.isFixed() && recordLength > 0) {
+            rps = SECTOR_SIZE / recordLength; // z.B. 3 bei 80 Byte
+            lrl = recordLength;
+        } else if (file.isVariable() && recordLength > 0) {
+            rps = 1;
+            lrl = recordLength;
+        } else {
+            // optional: Fehlerfall
+        }
+        fdr.setRecordsPerSector(rps);
+        fdr.setLogicalRecordLength(lrl);
         fdr.setLevel3RecordsUsed(0);
 
+        // --------------------------------------------------------
+        // Timestamps
+        // --------------------------------------------------------
         int timestamp = encodeFilDateTime(LocalDateTime.now());
         fdr.setCreationTimestamp(timestamp);
         fdr.setUpdateTimestamp(timestamp);
 
+        // --------------------------------------------------------
         // Sector info
+        // --------------------------------------------------------
         int sectors = allocatedSectors.size();
         fdr.setTotalSectorsAllocated(sectors);
         fdr.setUsedSectors(sectors);
@@ -333,10 +411,13 @@ public final class FileWriter {
         fdr.setFirstSector(allocatedSectors.get(0));
         fdr.setLastSector(allocatedSectors.get(sectors - 1));
 
-        fdr.setEofOffset(fileSize % SECTOR_SIZE);
+        // EOF offset: offset of last valid byte in last sector
+        fdr.setEofOffset(packedSize % SECTOR_SIZE);
+
+        // No FDR chaining for now
         fdr.setNextFdr(0);
 
-        // Data chain (legacy)
+        // Data chain (legacy / convenience)
         fdr.setDataChain(allocatedSectors);
 
         return fdr;
@@ -428,8 +509,6 @@ public final class FileWriter {
     private static VolumeInformationBlock updateVibWithNewAbm(
             VolumeInformationBlock oldVib,
             AllocationBitmap abm) {
-
-        // log.debug("updateVibWithNewAbm(oldVib={}, abm={})", oldVib, abm);
 
         return new VolumeInformationBlock(
                 oldVib.getVolumeName(),

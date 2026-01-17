@@ -31,7 +31,8 @@ import com.miriki.ti99.imagetools.domain.VolumeInformationBlock;
  */
 public final class VolumeInformationBlockIO {
 
-    private static final Logger log = LoggerFactory.getLogger(VolumeInformationBlockIO.class);
+    @SuppressWarnings("unused")
+	private static final Logger log = LoggerFactory.getLogger(VolumeInformationBlockIO.class);
 
     private static final int SIZE = 256;
     private static final int OFFSET_BITMAP = 0x38;
@@ -129,15 +130,17 @@ public final class VolumeInformationBlockIO {
         writeWord(raw, 0x36, vib.getDir3Pointer());
 
         // --- Allocation Bitmap ---
+        /*
         int bitmapBytes = (vib.getTotalSectors() + 7) / 8;
         byte[] bitmapRaw = vib.getAbm().toBytes();
-
         System.arraycopy(bitmapRaw, 0, raw, OFFSET_BITMAP, bitmapBytes);
-
-        // Fill unused bitmap area with 0xFF
-        // Arrays.fill(raw, OFFSET_BITMAP + bitmapBytes, SIZE, (byte) 0xFF);
-        // Arrays.fill(raw, OFFSET_BITMAP + bitmapBytes, OFFSET_BITMAP + bitmapBytes, (byte) 0x00);
-
+		*/
+        byte[] bitmapRaw = vib.getAbm().toBytes();
+        if (bitmapRaw.length != 200) {
+            throw new IllegalStateException("Allocation bitmap must be exactly 200 bytes");
+        }
+        System.arraycopy(bitmapRaw, 0, raw, OFFSET_BITMAP, 200);
+        
         // --- Write to sector ---
         for (int i = 0; i < SIZE; i++) {
             sector.set(i, raw[i]);

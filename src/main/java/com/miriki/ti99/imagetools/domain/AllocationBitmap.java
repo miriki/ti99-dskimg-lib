@@ -27,13 +27,17 @@ import org.slf4j.LoggerFactory;
  */
 public final class AllocationBitmap {
 
-    private static final Logger log = LoggerFactory.getLogger(AllocationBitmap.class);
+    @SuppressWarnings("unused")
+	private static final Logger log = LoggerFactory.getLogger(AllocationBitmap.class);
 
     /** Total number of sectors covered by this bitmap. */
     private final int totalSectors;
 
     /** Allocation state: true = used, false = free. */
     private final boolean[] used;
+
+    /** Allocation state: true = blocked, false = available. */
+    private final boolean[] blocked;
 
     // ============================================================
     //  CONSTRUCTORS
@@ -51,16 +55,26 @@ public final class AllocationBitmap {
 
         this.totalSectors = totalSectors;
         this.used = new boolean[totalSectors]; // all free by default
+        Arrays.fill(this.used, false);
+
+        int blockedSize = 1600 - totalSectors;
+        this.blocked = new boolean[blockedSize];
+        Arrays.fill(this.blocked, true);
     }
 
     /**
      * Internal constructor used by fromBytes().
      */
-    private AllocationBitmap(int totalSectors, boolean[] used) {
+    private AllocationBitmap(int totalSectors, boolean[] used, boolean[] blocked) {
         // log.debug("[constructor] AllocationBitmap({}, used[])", totalSectors);
 
         this.totalSectors = totalSectors;
         this.used = used;
+        this.blocked = blocked;
+
+        // int blockedSize = 1600 - totalSectors;
+        // this.blocked = new boolean[blockedSize];
+        // Arrays.fill(this.blocked, true);
     }
 
     // ============================================================
@@ -131,11 +145,22 @@ public final class AllocationBitmap {
     public byte[] toBytes() {
         // log.debug("toBytes()");
 
-        int bytes = (totalSectors + 7) / 8;
-        byte[] result = new byte[bytes];
+        // int bytes = (totalSectors + 7) / 8;
+        byte[] result = new byte[200];
 
+        // used[]
         for (int sector = 0; sector < totalSectors; sector++) {
             if (used[sector]) {
+                int byteIndex = sector / 8;
+                int bitIndex  = sector % 8;
+                result[byteIndex] |= (1 << bitIndex);
+            }
+        }
+        
+        // blocked[]
+        for (int i = 0; i < blocked.length; i++) {
+            if (blocked[i]) {
+            	int sector = totalSectors + i;
                 int byteIndex = sector / 8;
                 int bitIndex  = sector % 8;
                 result[byteIndex] |= (1 << bitIndex);
@@ -167,14 +192,16 @@ public final class AllocationBitmap {
         }
 
         boolean[] used = new boolean[totalSectors];
-
         for (int sector = 0; sector < totalSectors; sector++) {
             int byteIndex = sector / 8;
             int bitIndex  = sector % 8;
             used[sector] = (bytes[byteIndex] & (1 << bitIndex)) != 0;
         }
+        
+        boolean[] blocked = new boolean[1600 - totalSectors];
+        Arrays.fill(blocked, true);
 
-        return new AllocationBitmap(totalSectors, used);
+        return new AllocationBitmap(totalSectors, used, blocked);
     }
 
     // ============================================================
@@ -194,7 +221,10 @@ public final class AllocationBitmap {
         boolean[] used = new boolean[totalSectors];
         Arrays.fill(used, true);
 
-        return new AllocationBitmap(totalSectors, used);
+        boolean[] blocked = new boolean[1600 - totalSectors];
+        Arrays.fill(blocked, true);
+
+        return new AllocationBitmap(totalSectors, used, blocked);
     }
 
     // ============================================================

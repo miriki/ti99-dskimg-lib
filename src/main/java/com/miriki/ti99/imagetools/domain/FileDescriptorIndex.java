@@ -24,7 +24,8 @@ import com.miriki.ti99.imagetools.io.Sector;
  */
 public final class FileDescriptorIndex {
 
-    private static final Logger log = LoggerFactory.getLogger(FileDescriptorIndex.class);
+    @SuppressWarnings("unused")
+	private static final Logger log = LoggerFactory.getLogger(FileDescriptorIndex.class);
 
     /** Maximum number of FDR entries in a 256-byte sector (minus terminator). */
     public static final int MAX_ENTRIES = (Sector.SIZE / 2) - 1;

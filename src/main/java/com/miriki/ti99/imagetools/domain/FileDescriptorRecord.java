@@ -60,8 +60,8 @@ public final class FileDescriptorRecord {
     //  CONSTANTS – TYPE/FLAG MASKS
     // ============================================================
 
-    public static final int TYPE_MASK = 0x0F;
-    public static final int FLAG_MASK = 0xF0;
+    // public static final int TYPE_MASK = 0x0F;
+    // public static final int FLAG_MASK = 0xF0;
 
     // ============================================================
     //  BASIC STATE
@@ -73,6 +73,8 @@ public final class FileDescriptorRecord {
     public boolean isEmpty() {
         return (fileName == null || fileName.isBlank())
                 && totalSectorsAllocated == 0
+                && fileStatus == 0
+                && recordsPerSector == 0
                 && dataChain.isEmpty();
     }
 
@@ -87,11 +89,11 @@ public final class FileDescriptorRecord {
     public int getTotalSectorsAllocated() { return totalSectorsAllocated; }
     public int getEofOffset() { return eofOffset; }
     public int getLogicalRecordLength() { return logicalRecordLength; }
-    public int getRecordLength() { return logicalRecordLength; }
+    // public int getRecordLength() { return logicalRecordLength; }
     public int getLevel3RecordsUsed() { return level3RecordsUsed; }
     public long getCreationTimestamp() { return creationTimestamp; }
     public long getUpdateTimestamp() { return updateTimestamp; }
-    public long getUpdateDate() { return updateTimestamp; }
+    // public long getUpdateDate() { return updateTimestamp; }
 
     // ============================================================
     //  GETTERS – CONVENIENCE FIELDS
@@ -127,10 +129,10 @@ public final class FileDescriptorRecord {
     //  FLAG HELPERS
     // ============================================================
 
-    public boolean hasFlag(FileFlagBits flag) { return (fileStatus & flag.mask) != 0; }
-    public boolean isProtected() { return hasFlag(FileFlagBits.PROTECTED); }
-    public boolean isBackup() { return hasFlag(FileFlagBits.BACKUP); }
-    public boolean isEmulate() { return hasFlag(FileFlagBits.EMULATE); }
+    public boolean hasFlag(FileStatusBits flag) { return (fileStatus & flag.mask) != 0; }
+    public boolean isProtected() { return hasFlag(FileStatusBits.PROTECT); }
+    public boolean isBackup() { return hasFlag(FileStatusBits.BACKUP); }
+    public boolean isEmulate() { return hasFlag(FileStatusBits.EMULATE); }
 
     // ============================================================
     //  SETTERS – EXACT FDR FIELDS
@@ -163,6 +165,7 @@ public final class FileDescriptorRecord {
     //  TYPE + FLAG HELPERS (compatible with FileFlagsIO)
     // ============================================================
 
+    /*
     public int getFileType() { return fileStatus & TYPE_MASK; }
 
     public void setFileType(int type) {
@@ -170,21 +173,26 @@ public final class FileDescriptorRecord {
     }
 
     public int getFlags() {
-        return (fileStatus & FLAG_MASK) >>> 4;
+        return fileStatus & FLAG_MASK;
     }
 
     public void setFlags(int flags) {
-        fileStatus = (fileStatus & TYPE_MASK) | ((flags << 4) & FLAG_MASK);
+        fileStatus = (fileStatus & TYPE_MASK) | (flags & FLAG_MASK);
     }
+    */
 
     // ============================================================
     //  FLUENT MODIFIERS
     // ============================================================
 
-    public FileDescriptorRecord withFlags(int v) { setFlags(v); return this; }
+    // public FileDescriptorRecord withFlags(int v) { setFlags(v); return this; }
     public FileDescriptorRecord withUsedSectors(int v) { setUsedSectors(v); return this; }
     public FileDescriptorRecord withEofOffset(int v) { setEofOffset(v); return this; }
     public FileDescriptorRecord withUpdateDate(long v) { setUpdateTimestamp(v); return this; }
     public FileDescriptorRecord withDataChain(List<Integer> v) { setDataChain(v); return this; }
     public FileDescriptorRecord withRecordLength(int v) { setLogicalRecordLength(v); return this; }
+    public FileDescriptorRecord withFileStatus(int status) {
+        setFileStatus(status);
+        return this;
+    }
 }

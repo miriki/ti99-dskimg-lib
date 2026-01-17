@@ -20,7 +20,8 @@ import org.slf4j.LoggerFactory;
  */
 public final class Sector {
 
-    private static final Logger log = LoggerFactory.getLogger(Sector.class);
+    @SuppressWarnings("unused")
+	private static final Logger log = LoggerFactory.getLogger(Sector.class);
 
     /** Fixed TI sector size (HFDC, TI-Controller, DSK images) */
     public static final int SIZE = 256;

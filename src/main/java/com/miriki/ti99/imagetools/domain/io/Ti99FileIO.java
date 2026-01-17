@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import com.miriki.ti99.imagetools.domain.DiskFormat;
 import com.miriki.ti99.imagetools.domain.FileDescriptorIndex;
 import com.miriki.ti99.imagetools.domain.FileDescriptorRecord;
+import com.miriki.ti99.imagetools.domain.FileStatusBuilder;
 import com.miriki.ti99.imagetools.domain.Ti99File;
 import com.miriki.ti99.imagetools.domain.Ti99FileSystem;
 import com.miriki.ti99.imagetools.fs.ClusterService;
@@ -192,17 +193,18 @@ public final class Ti99FileIO {
     //  HELPER – FDR UPDATE / BUILD
     // ============================================================
 
-    private static FileDescriptorRecord buildUpdatedFdr(FileDescriptorRecord original,
-                                                        Ti99File file,
-                                                        List<Integer> newClusters,
-                                                        int totalSectors,
-                                                        int eofOffset,
-                                                        int timestamp) {
+    private static FileDescriptorRecord buildUpdatedFdr(
+            FileDescriptorRecord original,
+            Ti99File file,
+            List<Integer> newClusters,
+            int totalSectors,
+            int eofOffset,
+            int timestamp) {
 
-        int encodedFlags = FileTypeIO.encode(file.getFileType(), original.getFlags());
+        int newStatus = FileStatusBuilder.buildStatusByte(file);
 
         return original
-                .withFlags(encodedFlags)
+                .withFileStatus(newStatus)
                 .withUsedSectors(totalSectors)
                 .withEofOffset(eofOffset)
                 .withUpdateDate(timestamp)
@@ -212,9 +214,9 @@ public final class Ti99FileIO {
     private static Ti99File buildTi99FileFromFdrAndContent(FileDescriptorRecord fdr, byte[] content) {
         Ti99File file = new Ti99File();
         file.setFileName(fdr.getFileName());
-        file.setFileType(FileTypeIO.decode(fdr.getFlags()));
+        file.setFileType(FileTypeIO.decode(fdr.getFileStatus()));
         file.setContent(content);
-        file.setFlags(fdr.getFlags());
+        file.setFlags(fdr.getFileStatus());
         file.setRecordLength(fdr.getLogicalRecordLength());
         file.setRecordsPerSector(fdr.getRecordsPerSector());
         file.setTimestamp(fdr.getUpdateTimestamp());
@@ -224,8 +226,8 @@ public final class Ti99FileIO {
     private static Ti99File buildTi99FileFromFdrForDirectory(FileDescriptorRecord fdr) {
         Ti99File file = new Ti99File();
         file.setFileName(fdr.getFileName());
-        file.setFileType(FileTypeIO.decode(fdr.getFlags()));
-        file.setFlags(fdr.getFlags());
+        file.setFileType(FileTypeIO.decode(fdr.getFileStatus()));
+        file.setFlags(fdr.getFileStatus());
         file.setRecordLength(fdr.getLogicalRecordLength());
         file.setRecordsPerSector(fdr.getRecordsPerSector());
         file.setTimestamp(fdr.getUpdateTimestamp());

@@ -24,7 +24,8 @@ import com.miriki.ti99.imagetools.domain.FileDescriptorIndex;
  */
 public final class FileDescriptorIndexIO {
 
-    private static final Logger log = LoggerFactory.getLogger(FileDescriptorIndexIO.class);
+    @SuppressWarnings("unused")
+	private static final Logger log = LoggerFactory.getLogger(FileDescriptorIndexIO.class);
 
     /** Fixed size of the FDI sector */
     private static final int SIZE = 256;

@@ -28,7 +28,8 @@ import com.miriki.ti99.imagetools.domain.FileDescriptorRecord;
  */
 public final class FileDescriptorRecordIO {
 
-    private static final Logger log = LoggerFactory.getLogger(FileDescriptorRecordIO.class);
+    @SuppressWarnings("unused")
+	private static final Logger log = LoggerFactory.getLogger(FileDescriptorRecordIO.class);
 
     private static final int SECTOR_SIZE = 256;
 

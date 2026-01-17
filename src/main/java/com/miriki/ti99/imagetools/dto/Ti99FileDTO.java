@@ -21,7 +21,7 @@ public final class Ti99FileDTO {
     private final int recordLength;       // 0 for PROGRAM files
     private final byte[] content;         // full linearized file content
 
-    private final int flags;              // raw FDR flags (upper nibble)
+    private final int flags;              // raw FDR status byte (type + flags)
     private final int recordsPerSector;   // derived from format + record length
     private final int size;               // file size in bytes
     private final long timestamp;         // best timestamp (created/updated)

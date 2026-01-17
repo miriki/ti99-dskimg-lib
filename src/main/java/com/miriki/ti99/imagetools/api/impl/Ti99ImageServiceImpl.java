@@ -59,8 +59,9 @@ public final class Ti99ImageServiceImpl implements Ti99ImageService {
                 image,
                 format,
                 vib,
-                file.getFileName(),
-                file.getContent()
+                // file.getFileName(),
+                // file.getContent()
+                file
         );
 
         VolumeInformationBlockIO.writeTo(image.getSector(format.getVibSector()), vib);

@@ -60,7 +60,10 @@ public final class DirectoryReader {
             FileDescriptorRecord fdr =
                     FileDescriptorRecordIO.readFrom(image.getSector(e.fdrSector()));
 
-            FileType fileType = FileType.fromCode(fdr.getFileType());
+            // FileType fileType = FileType.fromCode(fdr.getFileType());
+            // FileType fileType = FileType.fromCode(FileType.fromStatusByte(fdr.getFileStatus()));
+            // FileType fileType = FileType.fromCode(FileType.fromCode(FileType.decodeFromStatus(fdr.getFileStatus()))));
+            FileType fileType = FileType.fromStatus(fdr.getFileStatus());
 
             // Build DTO
             Ti99DirectoryEntry dto = new Ti99DirectoryEntry(

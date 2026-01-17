@@ -76,7 +76,7 @@ public final class DiskFormatFactory {
                 9,                      // sectors per track
                 DiskFormat.Density.SINGLE,
                 32,                     // FDR sectors (2..15)
-                0,                     // reserved (16..33)
+                0,                      // reserved (16..33)
                 1                       // sectors per cluster
         );
     }
@@ -86,7 +86,7 @@ public final class DiskFormatFactory {
         return create(
                 40,
                 2,
-                9,
+                18,
                 DiskFormat.Density.DOUBLE,
                 32,
                 0,

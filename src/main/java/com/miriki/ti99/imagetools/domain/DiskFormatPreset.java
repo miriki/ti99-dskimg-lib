@@ -19,7 +19,8 @@ import org.slf4j.LoggerFactory;
  */
 public final class DiskFormatPreset {
 
-    private static final Logger log = LoggerFactory.getLogger(DiskFormatPreset.class);
+    @SuppressWarnings("unused")
+	private static final Logger log = LoggerFactory.getLogger(DiskFormatPreset.class);
 
     /** Display name of the preset (e.g. "TI SSSD 40-Track"). */
     private final String name;
@@ -107,7 +108,7 @@ public final class DiskFormatPreset {
                             0,            // VIB sector
                             1,            // FDI sector
                             2,            // FDR start
-                            31,           // FDR count
+                            32,           // FDR count
                             34,           // data start
                             1             // sectors per cluster
                     )

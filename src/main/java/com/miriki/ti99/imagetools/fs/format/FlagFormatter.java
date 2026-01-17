@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.miriki.ti99.imagetools.domain.FileDescriptorRecord;
-import com.miriki.ti99.imagetools.domain.FileFlagBits;
+import com.miriki.ti99.imagetools.domain.FileStatusBits;
 
 /**
  * Formatter for human-readable file flag descriptions.
@@ -36,9 +36,9 @@ public final class FlagFormatter {
 
         List<String> flags = new ArrayList<>(3);
 
-        if (fdr.hasFlag(FileFlagBits.PROTECTED)) flags.add("Protected");
-        if (fdr.hasFlag(FileFlagBits.BACKUP))    flags.add("Backup");
-        if (fdr.hasFlag(FileFlagBits.EMULATE))   flags.add("Emulate");
+        if (fdr.hasFlag(FileStatusBits.PROTECT)) flags.add("Protected");
+        if (fdr.hasFlag(FileStatusBits.BACKUP))    flags.add("Backup");
+        if (fdr.hasFlag(FileStatusBits.EMULATE))   flags.add("Emulate");
 
         return flags.isEmpty()
                 ? "None"

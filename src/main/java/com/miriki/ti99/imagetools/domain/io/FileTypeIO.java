@@ -1,18 +1,22 @@
 package com.miriki.ti99.imagetools.domain.io;
 
-import java.util.Locale;
+// import java.util.Locale;
+
+import com.miriki.ti99.imagetools.domain.FileType;
 
 /**
  * High-level encoder/decoder for TI-99 file types stored in the lower
- * 4 bits of the fileStatus byte (0bFFFF TTTT).
+ * 4 bits of the FDR fileStatus byte (0bFFFF TTTT).
  *
- * Types:
+ * Types (lower nibble):
  *   PROGRAM   = 0x01
  *   DIS/FIX   = 0x02
  *   DIS/VAR   = 0x03
- *   INTERNAL  = 0x04
+ *   INT/FIX   = 0x04
+ *   INT/VAR   = 0x05
  *
- * Variable/fixed record format is indicated by FLAG_VARIABLE (upper nibble).
+ * Only the lower nibble is handled here.
+ * Upper-nibble flags (PROTECTED, BACKUP, EMULATE) remain unchanged.
  */
 public final class FileTypeIO {
 
@@ -26,16 +30,15 @@ public final class FileTypeIO {
 
     public static String decode(int status) {
 
-        int type = FileFlagBits.extractType(status);
-        boolean variable = FileFlagBits.extractFlags(status) != 0
-                && (status & FileFlagBits.FLAG_VARIABLE) != 0;
+        FileType type = FileType.fromStatus(status);
 
         return switch (type) {
-            case FileFlagBits.TYPE_PROGRAM  -> "PROGRAM";
-            case FileFlagBits.TYPE_DISFIX   -> "DIS/FIX";
-            case FileFlagBits.TYPE_DISVAR   -> "DIS/VAR";
-            case FileFlagBits.TYPE_INTERNAL -> variable ? "INT/VAR" : "INT/FIX";
-            default -> "UNKNOWN";
+            case PROGRAM -> "PROGRAM";
+            case DISFIX  -> "DIS/FIX";
+            case DISVAR  -> "DIS/VAR";
+            case INTFIX  -> "INT/FIX";
+            case INTVAR  -> "INT/VAR";
+            default      -> "UNKNOWN";
         };
     }
 
@@ -47,41 +50,41 @@ public final class FileTypeIO {
      * Encodes a TI file type into the lower nibble of the status byte.
      * All other flags (protect, backup, emulate, etc.) remain unchanged.
      */
-    public static int encode(String type, int existingFlags) {
+    /*
+    public static int encode(String type, int existingStatus) {
 
-        // Remove old type bits (lower nibble)
-        int flags = existingFlags & ~FileFlagBits.TYPE_MASK;
-
-        // Remove variable flag (we reapply it if needed)
-        flags &= ~FileFlagBits.FLAG_VARIABLE;
+        // Nur PROTECT/BACKUP/EMULATE behalten
+        int status = existingStatus & (0x08 | 0x10 | 0x20);
 
         switch (type.toUpperCase(Locale.ROOT)) {
 
             case "PROGRAM" -> {
-                flags |= FileFlagBits.TYPE_PROGRAM;
+                status |= 0x01; // Bit 0 = Program
             }
 
             case "DIS/FIX" -> {
-                flags |= FileFlagBits.TYPE_DISFIX;
+                // Bit 0 = 0 (Data)
+                // Bit 1 = 0 (Display)
+                // Bit 7 = 0 (Fixed)
             }
 
             case "DIS/VAR" -> {
-                flags |= FileFlagBits.TYPE_DISVAR;
-                flags |= FileFlagBits.FLAG_VARIABLE;
+                status |= 0x80; // Bit 7 = Variable
             }
 
             case "INT/FIX" -> {
-                flags |= FileFlagBits.TYPE_INTERNAL;
+                status |= 0x02; // Bit 1 = Internal
             }
 
             case "INT/VAR" -> {
-                flags |= FileFlagBits.TYPE_INTERNAL;
-                flags |= FileFlagBits.FLAG_VARIABLE;
+                status |= 0x02; // Internal
+                status |= 0x80; // Variable
             }
 
             default -> throw new IllegalArgumentException("Unknown TI-99 file type: " + type);
         }
 
-        return flags;
+        return status;
     }
+    */
 }

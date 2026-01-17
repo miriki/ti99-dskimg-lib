@@ -14,7 +14,8 @@ import org.slf4j.LoggerFactory;
  */
 public final class DiskFormat {
 
-    private static final Logger log = LoggerFactory.getLogger(DiskFormat.class);
+    @SuppressWarnings("unused")
+	private static final Logger log = LoggerFactory.getLogger(DiskFormat.class);
 
     // ============================================================
     //  PHYSICAL GEOMETRY
@@ -43,9 +44,11 @@ public final class DiskFormat {
     private final int sectorsPerCluster;
 
     public enum Density {
-        SINGLE,   // SD
-        DOUBLE,   // DD
-        QUAD      // QD
+    	undefined, // 0
+        SINGLE,    // SD 1
+        DOUBLE,    // DD 2
+        HIGH,      // HD 3
+        ULTRA      // UD 4
     }
 
     // ============================================================
