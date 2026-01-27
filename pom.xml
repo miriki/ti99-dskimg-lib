@@ -5,11 +5,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.miriki.ti99</groupId>
-    <artifactId>imagetools</artifactId>
+    <artifactId>ti99-dskimg-lib</artifactId>
     <version>1.0.0</version>
     <packaging>jar</packaging>
 
-    <name>Ti99ImageTools</name>
+    <name>TI99 Disk Image Library</name>
 
 	<properties>
 	

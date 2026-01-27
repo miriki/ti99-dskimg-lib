@@ -1,0 +1,317 @@
+Auflistung der Ordnerpfade für Volume Spock_C
+Volumeseriennummer : 1CB5-7A6E
+C:.
+¦   .checkstyle
+¦   .classpath
+¦   .gitignore
+¦   .project
+¦   pom.xml
+¦   tree.txt
+¦   
++---.settings
+¦       org.eclipse.core.resources.prefs
+¦       org.eclipse.jdt.core.prefs
+¦       org.eclipse.m2e.core.prefs
+¦       
++---src
+¦   +---main
+¦       +---java
+¦           +---com
+¦               +---miriki
+¦                   +---ti99
+¦                       +---imagetools
+¦                           ¦   tree.txt
+¦                           ¦   
+¦                           +---api
+¦                           ¦   ¦   dir.txt
+¦                           ¦   ¦   Ti99ImageService.java
+¦                           ¦   ¦   
+¦                           ¦   +---impl
+¦                           ¦           dir.txt
+¦                           ¦           Ti99ImageServiceImpl.java
+¦                           ¦           
+¦                           +---domain
+¦                           ¦   ¦   AllocationBitmap.java
+¦                           ¦   ¦   DataChainPointer.java
+¦                           ¦   ¦   dir.txt
+¦                           ¦   ¦   Directory.java
+¦                           ¦   ¦   DirectoryEntry.java
+¦                           ¦   ¦   DiskFormat.java
+¦                           ¦   ¦   DiskFormatCatalog.java
+¦                           ¦   ¦   DiskFormatFactory.java
+¦                           ¦   ¦   DiskFormatPreset.java
+¦                           ¦   ¦   DiskFormatPresetCatalog.java
+¦                           ¦   ¦   DiskGeometry.java
+¦                           ¦   ¦   FdrStatus.java
+¦                           ¦   ¦   FileAttribute.java
+¦                           ¦   ¦   FileData.java
+¦                           ¦   ¦   FileDescriptorIndex.java
+¦                           ¦   ¦   FileDescriptorRecord.java
+¦                           ¦   ¦   FileDirectoryInformation.java
+¦                           ¦   ¦   FileStatusBuilder.java
+¦                           ¦   ¦   RecordLength.java
+¦                           ¦   ¦   Ti99File.java
+¦                           ¦   ¦   Ti99FileSystem.java
+¦                           ¦   ¦   Ti99Image.java
+¦                           ¦   ¦   Ti99ImageFactory.java
+¦                           ¦   ¦   VolumeInformationBlock.java
+¦                           ¦   ¦   
+¦                           ¦   +---constants
+¦                           ¦   ¦       dir.txt
+¦                           ¦   ¦       DirectoryConstants_prep.java
+¦                           ¦   ¦       DiskGeometryConstants.java
+¦                           ¦   ¦       DiskLayoutConstants.java
+¦                           ¦   ¦       FdiConstants.java
+¦                           ¦   ¦       FdrConstants.java
+¦                           ¦   ¦       FileTypeStrings.java
+¦                           ¦   ¦       VibConstants.java
+¦                           ¦   ¦       VolumeConstants.java
+¦                           ¦   ¦       
+¦                           ¦   +---enums
+¦                           ¦   ¦       dir.txt
+¦                           ¦   ¦       DiskDensity.java
+¦                           ¦   ¦       DiskSides.java
+¦                           ¦   ¦       DiskType.java
+¦                           ¦   ¦       FileType.java
+¦                           ¦   ¦       RecordFormat.java
+¦                           ¦   ¦       
+¦                           ¦   +---fscheck
+¦                           ¦   ¦       AbmConsistencyChecker.java
+¦                           ¦   ¦       CrossLinkChecker.java
+¦                           ¦   ¦       DefaultHealthScoreCalculator.java
+¦                           ¦   ¦       dir.txt
+¦                           ¦   ¦       DirectoryConsistencyChecker.java
+¦                           ¦   ¦       FilesystemChecker.java
+¦                           ¦   ¦       FilesystemCheckResult.java
+¦                           ¦   ¦       FilesystemHealth.java
+¦                           ¦   ¦       FilesystemIssue.java
+¦                           ¦   ¦       FilesystemIssueType.java
+¦                           ¦   ¦       FilesystemRepairEngine.java
+¦                           ¦   ¦       FilesystemRepairPlan.java
+¦                           ¦   ¦       FilesystemRepairReport.java
+¦                           ¦   ¦       FilesystemRepairStrategy.java
+¦                           ¦   ¦       HealthScoreCalculator.java
+¦                           ¦   ¦       OrphanClusterChecker.java
+¦                           ¦   ¦       Severity.java
+¦                           ¦   ¦       
+¦                           ¦   +---io
+¦                           ¦           DataChainPointerIO.java
+¦                           ¦           dir.txt
+¦                           ¦           EofOffsetIO.java
+¦                           ¦           FileNameIO.java
+¦                           ¦           FileTypeIO.java
+¦                           ¦           ImageFormatter.java
+¦                           ¦           Level3RecordsIO.java
+¦                           ¦           RecordLengthIO.java
+¦                           ¦           SectorCountIO.java
+¦                           ¦           Ti99FileIO.java
+¦                           ¦           Ti99FileSystemIO.java
+¦                           ¦           TimestampIO.java
+¦                           ¦           
+¦                           +---dto
+¦                           ¦       AllocationBitmapDTO.java
+¦                           ¦       DataChainPointerDTO.java
+¦                           ¦       dir.txt
+¦                           ¦       FileDescriptorIndexDTO.java
+¦                           ¦       FileDescriptorRecordDTO.java
+¦                           ¦       HfdcDirectoryEntry.java
+¦                           ¦       Ti99FileDTO.java
+¦                           ¦       VolumeInformationBlockDTO.java
+¦                           ¦       
+¦                           +---fs
+¦                           ¦   ¦   ClusterService.java
+¦                           ¦   ¦   dir.txt
+¦                           ¦   ¦   DirectoryReader.java
+¦                           ¦   ¦   FileExporter.java
+¦                           ¦   ¦   FileImporter.java
+¦                           ¦   ¦   FileReader.java
+¦                           ¦   ¦   FileWriter.java
+¦                           ¦   ¦   
+¦                           ¦   +---format
+¦                           ¦           dir.txt
+¦                           ¦           FileTypeFormatter.java
+¦                           ¦           FlagFormatter.java
+¦                           ¦           RecordFormatFormatter.java
+¦                           ¦           RecordLengthFormatter.java
+¦                           ¦           
+¦                           +---io
+¦                           ¦       AllocationBitmapIO.java
+¦                           ¦       Cluster.java
+¦                           ¦       DataChainBlockIO.java
+¦                           ¦       dir.txt
+¦                           ¦       DirectoryIO.java
+¦                           ¦       FdiDirectoryIO.java
+¦                           ¦       FileDescriptorIndexIO.java
+¦                           ¦       FileDescriptorRecordIO.java
+¦                           ¦       FileDirectoryInformationIO.java
+¦                           ¦       Sector.java
+¦                           ¦       VolumeInformationBlockIO.java
+¦                           ¦       
+¦                           +---test
+¦                                   dir.txt
+¦                                   FdrTypeTest.java
+¦                                   
++---target
+    ¦   imagetools-1.0.0.jar
+    ¦   
+    +---classes
+    ¦   +---com
+    ¦   ¦   +---miriki
+    ¦   ¦       +---ti99
+    ¦   ¦           +---imagetools
+    ¦   ¦               ¦   tree.txt
+    ¦   ¦               ¦   
+    ¦   ¦               +---api
+    ¦   ¦               ¦   ¦   dir.txt
+    ¦   ¦               ¦   ¦   Ti99ImageService.class
+    ¦   ¦               ¦   ¦   
+    ¦   ¦               ¦   +---impl
+    ¦   ¦               ¦           dir.txt
+    ¦   ¦               ¦           Ti99ImageServiceImpl.class
+    ¦   ¦               ¦           
+    ¦   ¦               +---domain
+    ¦   ¦               ¦   ¦   AllocationBitmap.class
+    ¦   ¦               ¦   ¦   DataChainPointer.class
+    ¦   ¦               ¦   ¦   dir.txt
+    ¦   ¦               ¦   ¦   Directory.class
+    ¦   ¦               ¦   ¦   DirectoryEntry.class
+    ¦   ¦               ¦   ¦   DiskFormat.class
+    ¦   ¦               ¦   ¦   DiskFormatCatalog.class
+    ¦   ¦               ¦   ¦   DiskFormatFactory.class
+    ¦   ¦               ¦   ¦   DiskFormatPreset$DiskFormatFactory.class
+    ¦   ¦               ¦   ¦   DiskFormatPreset.class
+    ¦   ¦               ¦   ¦   DiskFormatPresetCatalog$Entry.class
+    ¦   ¦               ¦   ¦   DiskFormatPresetCatalog.class
+    ¦   ¦               ¦   ¦   DiskGeometry.class
+    ¦   ¦               ¦   ¦   FdrStatus.class
+    ¦   ¦               ¦   ¦   FileAttribute.class
+    ¦   ¦               ¦   ¦   FileData.class
+    ¦   ¦               ¦   ¦   FileDescriptorIndex.class
+    ¦   ¦               ¦   ¦   FileDescriptorRecord.class
+    ¦   ¦               ¦   ¦   FileDirectoryInformation.class
+    ¦   ¦               ¦   ¦   FileStatusBuilder.class
+    ¦   ¦               ¦   ¦   RecordLength.class
+    ¦   ¦               ¦   ¦   Ti99File.class
+    ¦   ¦               ¦   ¦   Ti99FileSystem.class
+    ¦   ¦               ¦   ¦   Ti99Image.class
+    ¦   ¦               ¦   ¦   Ti99ImageFactory.class
+    ¦   ¦               ¦   ¦   VolumeInformationBlock.class
+    ¦   ¦               ¦   ¦   
+    ¦   ¦               ¦   +---constants
+    ¦   ¦               ¦   ¦       dir.txt
+    ¦   ¦               ¦   ¦       DirectoryConstants_prep.class
+    ¦   ¦               ¦   ¦       DiskGeometryConstants.class
+    ¦   ¦               ¦   ¦       DiskLayoutConstants.class
+    ¦   ¦               ¦   ¦       FdiConstants.class
+    ¦   ¦               ¦   ¦       FdrConstants.class
+    ¦   ¦               ¦   ¦       FileTypeStrings.class
+    ¦   ¦               ¦   ¦       VibConstants.class
+    ¦   ¦               ¦   ¦       VolumeConstants.class
+    ¦   ¦               ¦   ¦       
+    ¦   ¦               ¦   +---enums
+    ¦   ¦               ¦   ¦       dir.txt
+    ¦   ¦               ¦   ¦       DiskDensity.class
+    ¦   ¦               ¦   ¦       DiskSides.class
+    ¦   ¦               ¦   ¦       DiskType.class
+    ¦   ¦               ¦   ¦       FileType.class
+    ¦   ¦               ¦   ¦       RecordFormat.class
+    ¦   ¦               ¦   ¦       
+    ¦   ¦               ¦   +---fscheck
+    ¦   ¦               ¦   ¦       AbmConsistencyChecker.class
+    ¦   ¦               ¦   ¦       CrossLinkChecker.class
+    ¦   ¦               ¦   ¦       DefaultHealthScoreCalculator.class
+    ¦   ¦               ¦   ¦       dir.txt
+    ¦   ¦               ¦   ¦       DirectoryConsistencyChecker.class
+    ¦   ¦               ¦   ¦       FilesystemChecker.class
+    ¦   ¦               ¦   ¦       FilesystemCheckResult.class
+    ¦   ¦               ¦   ¦       FilesystemHealth.class
+    ¦   ¦               ¦   ¦       FilesystemIssue.class
+    ¦   ¦               ¦   ¦       FilesystemIssueType.class
+    ¦   ¦               ¦   ¦       FilesystemRepairEngine.class
+    ¦   ¦               ¦   ¦       FilesystemRepairPlan$RepairPlanStatus.class
+    ¦   ¦               ¦   ¦       FilesystemRepairPlan.class
+    ¦   ¦               ¦   ¦       FilesystemRepairReport.class
+    ¦   ¦               ¦   ¦       FilesystemRepairStrategy.class
+    ¦   ¦               ¦   ¦       HealthScoreCalculator.class
+    ¦   ¦               ¦   ¦       OrphanClusterChecker.class
+    ¦   ¦               ¦   ¦       Severity.class
+    ¦   ¦               ¦   ¦       
+    ¦   ¦               ¦   +---io
+    ¦   ¦               ¦           DataChainPointerIO.class
+    ¦   ¦               ¦           dir.txt
+    ¦   ¦               ¦           EofOffsetIO.class
+    ¦   ¦               ¦           FileNameIO.class
+    ¦   ¦               ¦           FileTypeIO.class
+    ¦   ¦               ¦           ImageFormatter.class
+    ¦   ¦               ¦           Level3RecordsIO.class
+    ¦   ¦               ¦           RecordLengthIO.class
+    ¦   ¦               ¦           SectorCountIO.class
+    ¦   ¦               ¦           Ti99FileIO.class
+    ¦   ¦               ¦           Ti99FileSystemIO.class
+    ¦   ¦               ¦           TimestampIO.class
+    ¦   ¦               ¦           
+    ¦   ¦               +---dto
+    ¦   ¦               ¦       AllocationBitmapDTO.class
+    ¦   ¦               ¦       DataChainPointerDTO.class
+    ¦   ¦               ¦       dir.txt
+    ¦   ¦               ¦       FileDescriptorIndexDTO.class
+    ¦   ¦               ¦       FileDescriptorRecordDTO.class
+    ¦   ¦               ¦       HfdcDirectoryEntry.class
+    ¦   ¦               ¦       Ti99FileDTO.class
+    ¦   ¦               ¦       VolumeInformationBlockDTO.class
+    ¦   ¦               ¦       
+    ¦   ¦               +---fs
+    ¦   ¦               ¦   ¦   ClusterService.class
+    ¦   ¦               ¦   ¦   dir.txt
+    ¦   ¦               ¦   ¦   DirectoryReader.class
+    ¦   ¦               ¦   ¦   FileExporter.class
+    ¦   ¦               ¦   ¦   FileImporter.class
+    ¦   ¦               ¦   ¦   FileReader.class
+    ¦   ¦               ¦   ¦   FileWriter.class
+    ¦   ¦               ¦   ¦   
+    ¦   ¦               ¦   +---format
+    ¦   ¦               ¦           dir.txt
+    ¦   ¦               ¦           FileTypeFormatter.class
+    ¦   ¦               ¦           FlagFormatter.class
+    ¦   ¦               ¦           RecordFormatFormatter.class
+    ¦   ¦               ¦           RecordLengthFormatter.class
+    ¦   ¦               ¦           
+    ¦   ¦               +---io
+    ¦   ¦               ¦       AllocationBitmapIO.class
+    ¦   ¦               ¦       Cluster.class
+    ¦   ¦               ¦       DataChainBlockIO.class
+    ¦   ¦               ¦       dir.txt
+    ¦   ¦               ¦       DirectoryIO.class
+    ¦   ¦               ¦       FdiDirectoryIO$DirectoryEntry.class
+    ¦   ¦               ¦       FdiDirectoryIO.class
+    ¦   ¦               ¦       FileDescriptorIndexIO.class
+    ¦   ¦               ¦       FileDescriptorRecordIO.class
+    ¦   ¦               ¦       FileDirectoryInformationIO.class
+    ¦   ¦               ¦       Sector.class
+    ¦   ¦               ¦       VolumeInformationBlockIO.class
+    ¦   ¦               ¦       
+    ¦   ¦               +---test
+    ¦   ¦                       dir.txt
+    ¦   ¦                       FdrTypeTest.class
+    ¦   ¦                       
+    ¦   +---META-INF
+    ¦       ¦   MANIFEST.MF
+    ¦       ¦   
+    ¦       +---maven
+    ¦           +---com.miriki.ti99
+    ¦               +---imagetools
+    ¦                       pom.properties
+    ¦                       pom.xml
+    ¦                       
+    +---generated-sources
+    ¦   +---annotations
+    +---maven-archiver
+    ¦       pom.properties
+    ¦       
+    +---maven-status
+        +---maven-compiler-plugin
+            +---compile
+                +---default-compile
+                        createdFiles.lst
+                        inputFiles.lst
+                        
