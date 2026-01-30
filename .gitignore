@@ -21,3 +21,10 @@ Thumbs.db
 *.tmp
 *.bak
 *.swp
+
+# Eclipse / Projekt-Müll
+.checkstyle
+
+# automatisch generierte Verzeichnislisten
+**/dir.txt
+**/tree.txt

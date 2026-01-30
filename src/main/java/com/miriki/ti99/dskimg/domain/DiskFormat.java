@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.miriki.ti99.dskimg.domain.constants.DiskGeometryConstants;
+import com.miriki.ti99.dskimg.domain.constants.DiskLayoutConstants;
 import com.miriki.ti99.dskimg.domain.constants.FdiConstants;
 import com.miriki.ti99.dskimg.domain.constants.FdrConstants;
 import com.miriki.ti99.dskimg.domain.constants.VibConstants;
@@ -112,6 +113,11 @@ public final class DiskFormat {
     public int getSides()             { return sides; }
     public DiskDensity getDensity()   { return density; }
 
+    /** Total disk size in bytes. */
+    public int getDiskSize() {
+        return totalSectors * DiskLayoutConstants.SECTOR_SIZE;
+    }
+    
     // ============================================================
     //  LOGICAL LAYOUT ACCESSORS
     // ============================================================
@@ -174,6 +180,49 @@ public final class DiskFormat {
         return sector >= firstDataSector && sector < totalSectors;
     }
 
+    public static DiskFormatPreset detectFormat(byte[] raw) {
+        Objects.requireNonNull(raw, "raw must not be null");
+
+        int size = raw.length;
+
+        // ============================================================
+        // 1. Eindeutige Größen
+        // ============================================================
+
+        if (size == 90 * 1024) {
+            return DiskFormatPreset.TI_SSSD;      // 360 sectors
+        }
+
+        if (size == 720 * 1024) {
+            return DiskFormatPreset.TI_DSDD_80;   // 2880 sectors
+        }
+
+        // ============================================================
+        // 2. Mehrdeutige Größen
+        // ============================================================
+
+        if (size == 180 * 1024) {
+            // SSDD40 (SS DD 40) oder DSSD40 (DS SD 40)
+            // -> 40 Tracks bevorzugt (beide)
+            // -> SD vor DD -> DSSD40
+            return DiskFormatPreset.TI_DSSD;
+        }
+
+        if (size == 360 * 1024) {
+            // DSDD40 (DD 40), DSSD80 (SD 80), SSDD80 (SS DD 80)
+            // -> 40 Tracks bevorzugt -> DSDD40
+            return DiskFormatPreset.TI_DSDD;
+        }
+
+        // ============================================================
+        // 3. Unbekannte Größe
+        // ============================================================
+
+        throw new IllegalArgumentException(
+                "Unknown TI-99 disk image size: " + size + " bytes"
+        );
+    }
+    
     // ============================================================
     //  PRESET (kept for convenience, but ideally moved to Factory)
     // ============================================================

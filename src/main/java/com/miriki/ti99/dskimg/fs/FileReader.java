@@ -6,7 +6,7 @@ import java.util.Objects;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.miriki.ti99.dskimg.api.impl.Ti99ImageServiceImpl;
+import com.miriki.ti99.dskimg.impl.Ti99DiskImageImpl;
 import com.miriki.ti99.dskimg.domain.DiskFormat;
 import com.miriki.ti99.dskimg.domain.FileData;
 import com.miriki.ti99.dskimg.domain.FileDescriptorRecord;
@@ -44,7 +44,7 @@ public final class FileReader {
         // 1) Read directory (modern HFDC DTO)
         // ------------------------------------------------------------
         // List<HfdcDirectoryEntry> entries = DirectoryReader.read(image);
-        Ti99FileSystem fs = Ti99ImageServiceImpl.loadFileSystem(image);
+        Ti99FileSystem fs = Ti99DiskImageImpl.loadFileSystem(image);
         List<HfdcDirectoryEntry> entries = DirectoryReader.read(fs);
 
         HfdcDirectoryEntry entry = entries.stream()

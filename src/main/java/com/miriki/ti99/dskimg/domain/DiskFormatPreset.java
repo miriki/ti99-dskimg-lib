@@ -60,6 +60,10 @@ public final class DiskFormatPreset {
         return factory.create();
     }
 
+    public int getDiskSize() {
+        return getFormat().getDiskSize();
+    }
+
     // ============================================================
     //  BUILT-IN PRESETS (TIImageTool-compatible)
     // ============================================================
@@ -109,6 +113,44 @@ public final class DiskFormatPreset {
                     )
             );
 
+    public static final DiskFormatPreset TI_DSSD_80 =
+            new DiskFormatPreset(
+                    "TI DSSD 80-Track",
+                    "Double-sided, single-density, 80 tracks, 9 sectors/track (1440 sectors)",
+                    () -> new DiskFormat(
+                            80 * 2 * 9,
+                            9,
+                            80,
+                            2,
+                            DiskDensity.SD,
+                            0,
+                            1,
+                            2,
+                            32,
+                            34,
+                            1
+                    )
+            );
+
+    public static final DiskFormatPreset TI_DSDD_80 =
+            new DiskFormatPreset(
+                    "TI DSDD 80-Track",
+                    "Double-sided, double-density, 80 tracks, 18 sectors/track (2880 sectors)",
+                    () -> new DiskFormat(
+                            80 * 2 * 18,
+                            18,
+                            80,
+                            2,
+                            DiskDensity.DD,
+                            0,
+                            1,
+                            2,
+                            32,
+                            34,
+                            4
+                    )
+            );
+
     // ============================================================
     //  PRESET LISTING
     // ============================================================
@@ -116,7 +158,9 @@ public final class DiskFormatPreset {
     private static final List<DiskFormatPreset> ALL = List.of(
             TI_SSSD,
             TI_DSSD,
-            TI_DSDD
+            TI_DSDD,
+            TI_DSSD_80,
+            TI_DSDD_80
     );
 
     /** Returns all built-in presets. */

@@ -6,7 +6,7 @@ import java.util.Objects;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.miriki.ti99.dskimg.api.impl.Ti99ImageServiceImpl;
+import com.miriki.ti99.dskimg.impl.Ti99DiskImageImpl;
 import com.miriki.ti99.dskimg.domain.*;
 
 /**
@@ -79,7 +79,7 @@ public final class FileImporter {
         // VolumeInformationBlock vib = VolumeInformationBlockIO.readFrom(image.getSector(format.getVibSector()));
 
         // VolumeInformationBlock updatedVib = FileWriter.deleteFile(image, format, vib, fileName);
-        Ti99FileSystem fs = Ti99ImageServiceImpl.loadFileSystem(image);
+        Ti99FileSystem fs = Ti99DiskImageImpl.loadFileSystem(image); 
         FileWriter.deleteFile(fs, fileName);
 
         // VolumeInformationBlockIO.writeTo( image.getSector(format.getVibSector()), updatedVib );
@@ -99,7 +99,7 @@ public final class FileImporter {
         log.debug("Renaming '{}' --> '{}' on image", oldName, newName);
 
         // Neues Filesystem laden
-        Ti99FileSystem fs = Ti99ImageServiceImpl.loadFileSystem(image);
+        Ti99FileSystem fs = Ti99DiskImageImpl.loadFileSystem(image);
 
         // Modernisierte API aufrufen
         FileWriter.renameFile(fs, oldName, newName);
